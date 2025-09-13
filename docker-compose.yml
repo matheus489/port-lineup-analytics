@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  ship-lineup-pipeline:
+    build: .
+    container_name: ship-lineup-pipeline
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/ship_lineup_db
+      - LOG_LEVEL=INFO
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:13
+    container_name: ship-lineup-db
+    environment:
+      - POSTGRES_DB=ship_lineup_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
