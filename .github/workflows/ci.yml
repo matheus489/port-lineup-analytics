@@ -50,7 +50,10 @@ jobs:
     
     - name: Run linting
       run: |
-        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Check formatting with black
         black --check src/
+        # Check import sorting with isort
         isort --check-only src/
+        # Run flake8 for code quality
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
